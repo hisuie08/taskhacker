@@ -2,6 +2,7 @@ from .Project import Project
 from .Task import Task
 from .User import User
 from .utils import *
+from .database import *
 
 
 class Controller(Singleton):
@@ -10,4 +11,7 @@ class Controller(Singleton):
     """
 
     def __init__(self):
-        pass
+        self.__session = DBInterface.session
+        self.userController = User
+        self.projectController = Project
+        self.taskController = Task

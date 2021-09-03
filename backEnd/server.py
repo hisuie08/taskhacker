@@ -5,6 +5,8 @@ from internal import *
 PATH = os.path.dirname(os.path.abspath(__file__))
 app = FastAPI()
 
+controller = Controller.Controller()
+
 
 @app.get("/")
 async def hello():

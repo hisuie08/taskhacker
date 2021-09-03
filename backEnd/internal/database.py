@@ -1,21 +1,22 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, DATETIME
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, Session
 from .utils import *
 
-_engine = create_engine(f"sqlite:///taskhacker.db")
-_Base = declarative_base()
+engine = create_engine(f"sqlite:///taskhacker.db")
+Base = declarative_base()
+Base.metadata.create_all(engine)
 
 
-class UserTable(_Base):
+class UserTable(Base):
     __tablename__ = "User"
     id = Column(Integer, primary_key=True)
     name = Column(String)
     passwd = Column(String)
 
 
-class ProjectTable(_Base):
+class ProjectTable(Base):
     __tablename__ = "Project"
     id = Column(Integer, primary_key=True)
     name = Column(String)
@@ -23,7 +24,7 @@ class ProjectTable(_Base):
     description = Column(String, nullable=True)
 
 
-class TaskTable(_Base):
+class TaskTable(Base):
     __tablename__ = "Task"
     id = Column(Integer, primary_key=True)
     name = Column(String)
@@ -43,6 +44,5 @@ class DBInterface(Singleton):
     """
 
     def __init__(self):
-        _Base.metadata.create_all(_engine)
-        _Session = sessionmaker(bind=_engine)
-        self.session = _Session()
+        CSession = sessionmaker(bind=engine)
+        self.session: Session = CSession()

@@ -24,7 +24,7 @@ class Task:
     Taskは最も重要な概念クラス。
     Project配下に属し、作成日、進行状況等を保持・更新する。
     """
-    @classmethod
+    @staticmethod
     def __session():
         return DBInterface().session
 
@@ -41,24 +41,32 @@ class Task:
         self.project = project
 
     @staticmethod
-    def create(name, deadline, memo, project, status=0, priority=0):
-        Task.__session.add(
-            TaskTable(id=createUUID(), name=name, status=status.value,
-                      priority=priority.value, deadline=deadline, memo=memo, project=project))
-        Task.__session.commit()
-        return
+    def create(name, deadline, memo, project, status=0, priority=0) -> Task:
+        uuid = createUUID()
+        with Task.__session().begin() as session:
+            session.add(
+                TaskTable(
+                    id=uuid, name=name, status=status.value, priority=priority.value,
+                    deadline=deadline, memo=memo, project=project))
+        return Task.fetch(uuid)
+
+    @staticmethod
+    def fetch(id):
+        with Task.__session().begin() as session:
+            return session.query(TaskTable).filter(id=id).first()
 
     def update(self, name=None, status=None, priority=None, deadline=None, memo=None, project=None):
-        target = Task.__session.query(TaskTable).filter_by(id=self.id)
-        target.name = name or target.name
-        target.status = status or target.status
-        target.priority = priority or target.priority
-        target.updated_at = datetime.now()
-        target.deadline = deadline or target.deadline
-        target.memo = memo or target.memo
-        target.project = project or target.project
-        Task.__session.commit()
-        return self
+        with Task.__session().begin() as session:
+            target = Task.__session.query(TaskTable).filter_by(id=self.id)
+            target.name = name or target.name
+            target.status = status or target.status
+            target.priority = priority or target.priority
+            target.updated_at = datetime.now()
+            target.deadline = deadline or target.deadline
+            target.memo = memo or target.memo
+            target.project = project or target.project
+        return self.fetch(target.id)
 
     def delete(self):
-        Task.__session.query(UserTable).filter_by(name=id).delete()
+        with Task.__session().begin() as session:
+            session.query(UserTable).filter_by(name=id).delete()
