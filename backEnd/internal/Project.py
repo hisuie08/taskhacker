@@ -8,8 +8,11 @@ class Project:
     Taskも自身のプロパティに親となるProjectのidを持ち、相互に連携する
     """
 
+    @classmethod
+    def _session():
+        return DBInterface().session
+
     def __init__(self, id=None, name=None, owner=None, description=None, slave=[]):
-        self._session: sessionmaker = DBInterface().session
         self.id = id
         self.name = name
         self.owner = owner

@@ -5,9 +5,11 @@ class User:
     """
     ユーザークラス。登録、認証、退会等ユーザー管理を統括する
     """
+    @classmethod
+    def _session():
+        return DBInterface().session
 
     def __init__(self, id=None, name=None, passwd=None):
-        self._session: sessionmaker = DBInterface().session
         self.id = id
         self.name = name
         self.passwd = passwd

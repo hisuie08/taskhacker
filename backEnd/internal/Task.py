@@ -24,9 +24,12 @@ class Task:
     Taskは最も重要な概念クラス。
     Project配下に属し、作成日、進行状況等を保持・更新する。
     """
+    @classmethod
+    def _session():
+        return DBInterface().session
 
-    def __init__(self, id=None, name=None, status=None, priority=None, created_at=None, updated_at=None, deadline=None, memo=None, project=None):
-        self._session: sessionmaker = DBInterface().session
+    def __init__(self, id=None, name=None, status=None, priority=None, created_at=None,
+                 updated_at=None, deadline=None, memo=None, project=None):
         self.id = id
         self.name = name
         self.status = status
