@@ -25,7 +25,7 @@ class Task:
     Project配下に属し、作成日、進行状況等を保持・更新する。
     """
     @classmethod
-    def _session():
+    def __session():
         return DBInterface().session
 
     def __init__(self, id=None, name=None, status=None, priority=None, created_at=None,
@@ -41,18 +41,15 @@ class Task:
         self.project = project
 
     @staticmethod
-    def create(name, deadline, memo, project, status=Status.WAITING, priority=Priority.LOW):
-        Task._session.add(
+    def create(name, deadline, memo, project, status=0, priority=0):
+        Task.__session.add(
             TaskTable(id=createUUID(), name=name, status=status.value,
                       priority=priority.value, deadline=deadline, memo=memo, project=project))
-        Task._session.commit()
+        Task.__session.commit()
         return
 
-    @staticmethod
-    def getAll()
-
     def update(self, name=None, status=None, priority=None, deadline=None, memo=None, project=None):
-        target = Task._session.query(TaskTable).filter_by(id=self.id)
+        target = Task.__session.query(TaskTable).filter_by(id=self.id)
         target.name = name or target.name
         target.status = status or target.status
         target.priority = priority or target.priority
@@ -60,7 +57,8 @@ class Task:
         target.deadline = deadline or target.deadline
         target.memo = memo or target.memo
         target.project = project or target.project
-        self.session.commit()
+        Task.__session.commit()
+        return self
 
     def delete(self):
-        Task._session.query(UserTable).filter_by(name=id).delete()
+        Task.__session.query(UserTable).filter_by(name=id).delete()

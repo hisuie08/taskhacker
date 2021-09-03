@@ -6,7 +6,7 @@ class User:
     ユーザークラス。登録、認証、退会等ユーザー管理を統括する
     """
     @classmethod
-    def _session():
+    def __session():
         return DBInterface().session
 
     def __init__(self, id=None, name=None, passwd=None):
@@ -18,28 +18,27 @@ class User:
 
     @staticmethod
     def register(self, name, passwd):
-        User._session.add(
+        User.__session.add(
             UserTable(id=createUUID(), name=name, passwd=passwd))
-        User._session.commit()
-        return self.auth(name, passwd)
+        User.__session.commit()
+        return User.auth(name, passwd)
 
     @staticmethod
     def auth(self, name, passwd):
-        user = User._session.query(UserTable).filter_by(
+        user = User.__session.query(UserTable).filter_by(
             name=name).first()
         if user is None:
             return 1
         if user.passwd != passwd:
             return 2
-        self.id, self.name, self.passwd = user.id, user.name, user.passwd
-        return self
+        return User(user.id, user.name, user.passwd)
 
     def edit(name=None, passwd=None):
-        target = User._session.query(UserTable).filter_by(id=self.id).first()
+        target = User.__session.query(UserTable).filter_by(id=self.id).first()
         target.name = name or target.name
         target.passwd = passwd or target.passwd
-        User._session.commit()
-        return self.auth(name, passwd)
+        User.__session.commit()
+        return User.auth(name, passwd)
 
     def unregister(self) -> None:
-        User._session.query(UserTable).filter_by(name=self.id).delete()
+        User.__session.query(UserTable).filter_by(name=self.id).delete()
