@@ -8,8 +8,8 @@ class Project:
     Taskも自身のプロパティに親となるProjectのidを持ち、相互に連携する
     """
 
-    def __init__(self, interface):
-        self.__session: sessionmaker = interface.session
+    def __init__(self):
+        self.__session: sessionmaker = DBInterface().session
         self.id = None
         self.name = None
         self.owner = None
@@ -17,16 +17,15 @@ class Project:
         self.slave = []
 
     def register(self, name, owner, description=None):
-        self.__session.add(ProjectTable(
+        self._session.add(ProjectTable(
             id=createUUID, name=name, owner=owner, description=description))
-        self.__session.commit()
+        self._session.commit()
 
     def getSlaves(self):
-        return self.__session.query(
+        return self._session.query(
             TaskTable).filter_by(project=self.id).all()
 
     def delete(self):
-        self.__session.query(
+        self._session.query(
             TaskTable).filter_by(project=self.id).delete()
-        self.__session.query(ProjectTable).filter_by(id=self.id).delete()
-        self.__session.commit()
+        self._session.query(ProjectTable).filter_by(id=self.id).delete()
