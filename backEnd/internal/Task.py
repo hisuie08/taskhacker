@@ -1,5 +1,4 @@
 from .database import *
-from .enumValue import *
 from .utils import *
 from datetime import datetime
 from enum import Enum
@@ -26,17 +25,17 @@ class Task:
     Project配下に属し、作成日、進行状況等を保持・更新する。
     """
 
-    def __init__(self):
+    def __init__(self, id=None, name=None, status=None, priority=None, created_at=None, updated_at=None, deadline=None, memo=None, project=None):
         self._session: sessionmaker = DBInterface().session
-        self.id = None
-        self.name = None
-        self.status = None
-        self.priority = None
-        self.created_at = None
-        self.updated_at = None
-        self.deadline = None
-        self.memo = None
-        self.project = None
+        self.id = id
+        self.name = name
+        self.status = status
+        self.priority = priority
+        self.created_at = created_at
+        self.updated_at = updated_at
+        self.deadline = deadline
+        self.memo = memo
+        self.project = project
 
     def create(self, name, deadline, memo, project, status=Status.WAITING, priority=Priority.LOW):
         self._session.add(
