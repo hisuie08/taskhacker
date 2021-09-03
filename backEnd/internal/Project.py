@@ -19,16 +19,17 @@ class Project:
         self.description = description
         self.slave = slave
 
+    @staticmethod
     def register(self, name, owner, description=None):
-        self._session.add(ProjectTable(
+        Project._session.add(ProjectTable(
             id=createUUID, name=name, owner=owner, description=description))
-        self._session.commit()
+        Project._session.commit()
 
     def getSlaves(self):
-        return self._session.query(
+        return Project._session.query(
             TaskTable).filter_by(project=self.id).all()
 
     def delete(self):
-        self._session.query(
+        Project._session.query(
             TaskTable).filter_by(project=self.id).delete()
-        self._session.query(ProjectTable).filter_by(id=self.id).delete()
+        Project._session.query(ProjectTable).filter_by(id=self.id).delete()

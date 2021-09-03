@@ -40,15 +40,19 @@ class Task:
         self.memo = memo
         self.project = project
 
-    def create(self, name, deadline, memo, project, status=Status.WAITING, priority=Priority.LOW):
-        self._session.add(
+    @staticmethod
+    def create(name, deadline, memo, project, status=Status.WAITING, priority=Priority.LOW):
+        Task._session.add(
             TaskTable(id=createUUID(), name=name, status=status.value,
                       priority=priority.value, deadline=deadline, memo=memo, project=project))
-        self._session.commit()
+        Task._session.commit()
         return
 
+    @staticmethod
+    def getAll()
+
     def update(self, name=None, status=None, priority=None, deadline=None, memo=None, project=None):
-        target = self._session.query(TaskTable).filter_by(id=self.id)
+        target = Task._session.query(TaskTable).filter_by(id=self.id)
         target.name = name or target.name
         target.status = status or target.status
         target.priority = priority or target.priority
@@ -59,7 +63,4 @@ class Task:
         self.session.commit()
 
     def delete(self):
-        self._session.query(UserTable).filter_by(name=id).delete()
-
-
-pass
+        Task._session.query(UserTable).filter_by(name=id).delete()
