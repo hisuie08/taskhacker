@@ -1,11 +1,11 @@
 import os
 from fastapi import FastAPI, Query
+from pydantic import BaseModel
 import uvicorn
-from internal import *
-PATH = os.path.dirname(os.path.abspath(__file__))
+from dbControll import Controller
 app = FastAPI()
 
-controller = Controller.Controller()
+controller = Controller()
 
 
 @app.get("/")
@@ -13,6 +13,16 @@ async def hello():
     return {"text": "hello world!"}
 
 
-@app.get("/user/register")
-async def register(id: int, name: str, passwd: str):
-    return {"id": id, "name": name, "passwd": passwd}
+class ReqUser(BaseModel):
+    name: str
+    passwd: str
+
+
+@app.post("/user/register")
+def register(data: ReqUser):
+    print(data)
+    user = controller.userController.register(data.name, data.passwd)
+    return {"id": user.id, "name": user.name, "passwd": user.passwd}
+
+
+uvicorn.run(app)
