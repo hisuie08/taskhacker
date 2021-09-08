@@ -2,7 +2,7 @@ import os
 from fastapi import FastAPI, Query
 from pydantic import BaseModel
 import uvicorn
-from dbControll import Controller
+from dbController import Controller
 app = FastAPI()
 
 controller = Controller()
