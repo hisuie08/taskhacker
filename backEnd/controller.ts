@@ -62,8 +62,7 @@ class ProjectController {
 }
 
 class TaskController {
-  register() {
-    
+  register() { 
   }
   getByProject(id: number) {
     let result = new Array<Task>()
