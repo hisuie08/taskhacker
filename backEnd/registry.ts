@@ -1,13 +1,12 @@
-import {User,Project,Task} from "./dataclass"
+import { User, Project, Task } from "./dataclass";
 export class Registry {
-  users: Map<number, typeof User>
-  projects: Map<number, typeof Project>
-  tasks: Map<number, typeof Task>
+  users: Map<number, User>;
+  projects: Map<number, Project>;
+  tasks: Map<number, Task>;
   constructor() {
-    this.users = new Map<number, typeof User>();
-    this.projects = new Map<number, typeof Project>();
-    this.tasks = new Map<number, typeof Task>();
+    this.users = new Map<number, User>();
+    this.projects = new Map<number, Project>();
+    this.tasks = new Map<number, Task>();
   }
 }
-export const registry: Registry = new Registry()
-export default registry
+export default new Registry();
