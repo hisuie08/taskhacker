@@ -12,38 +12,36 @@ class UserController {
       }
     }
     registry.users.set(id, user);
-    return this.get(id)
+    return this.get(id);
   }
-    get(key: number | string):User {
-        if (typeof key === "number") {
-          return registry.users.get(key)
+  get(key: number | string): User {
+    if (typeof key === "number") {
+      return registry.users.get(key);
+    } else {
+      for (const user of registry.users.values()) {
+        if (user.name === key) {
+          return user;
         }
-        else {
-            for (const user of registry.users.values()) {
-                if (user.name === key) {
-                    return user
-                }
-            }
-        }
-        throw new UserException("User not found")
+      }
     }
-    auth(name: string, passwd: string):User {
-        for (const user of registry.users.values()) {
-            if (user.name === name && user.passwd === passwd) {
-                return user
-            }
-        }
+    throw new UserException("User not found");
+  }
+  auth(name: string, passwd: string): User {
+    for (const user of registry.users.values()) {
+      if (user.name === name && user.passwd === passwd) {
+        return user;
+      }
     }
-    update(id: number,name: string | null, passwd: string | null) {
-        const user = this.get(id)
-        if (name != void 0) user.name = name
-        if (passwd != void 0) user.passwd = passwd
-        registry.users.set(id,user)
-        
-    }
-    unregister(id: number):void {
-        registry.users.delete(id)
-    }
+  }
+  update(id: number, name: string | null, passwd: string | null) {
+    const user = this.get(id);
+    if (name != void 0) user.name = name;
+    if (passwd != void 0) user.passwd = passwd;
+    registry.users.set(id, user);
+  }
+  unregister(id: number): void {
+    registry.users.delete(id);
+  }
 }
 
 class ProjectController {}
