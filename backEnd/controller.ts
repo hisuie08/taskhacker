@@ -1,4 +1,4 @@
-import registry, { Registry } from "./registry";
+import registry from "./registry";
 import { User, Project, Task } from "./dataclass";
 import { createUUID, now } from "./utils";
 import { UserException } from "./exceptions";

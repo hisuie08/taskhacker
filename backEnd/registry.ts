@@ -1,5 +1,5 @@
 import { User, Project, Task } from "./dataclass";
-export class Registry {
+class Registry {
   users: Map<number, User>;
   projects: Map<number, Project>;
   tasks: Map<number, Task>;
