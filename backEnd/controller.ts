@@ -5,6 +5,7 @@ import { UserException } from "./exceptions";
 class UserController {
   register(name: string, passwd: string): User | null {
     const id: number = createUUID();
+    //TODO: passwd平文なんとかする
     const user: User = new User(id, name, passwd);
     for (const u of registry.users.values()) {
       if (u.name === name) {
