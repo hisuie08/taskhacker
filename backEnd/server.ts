@@ -31,23 +31,32 @@ app.get("/project", (req: Request, res: Response) => {
     const userID: number = req.query.userID != void 0? Number(req.query.userID as string):null
 })
 app.post("/project", (req: Request, res: Response) => {
+    const userID: number = req.query.userID != void 0? Number(req.query.userID as string):null
 })
 
 app.get("/project/:projectID", (req: Request, res: Response) => {
+    const userID: number = req.query.userID != void 0? Number(req.query.userID as string):null
 })
 app.put("/project/:projectID", (req: Request, res: Response) => {
+    const userID: number = req.query.userID != void 0? Number(req.query.userID as string):null
 })
 app.delete("/project/:projectID", (req: Request, res: Response) => {
+    const userID: number = req.query.userID != void 0? Number(req.query.userID as string):null
 })
 
 app.get("/project/:projectID/task", (req: Request, res: Response) => {
+    const userID: number = req.query.userID != void 0? Number(req.query.userID as string):null
 })
 app.post("/project/:projectID/task", (req: Request, res: Response) => {
+    const userID: number = req.query.userID != void 0? Number(req.query.userID as string):null
 })
 
 app.get("/project/:projectID/task/:taskID", (req: Request, res: Response) => {
+    const userID: number = req.query.userID != void 0? Number(req.query.userID as string):null
 })
 app.put("/project/:projectID/task/:taskID", (req: Request, res: Response) => {
+    const userID: number = req.query.userID != void 0? Number(req.query.userID as string):null
 })
 app.delete("/project/:projectID/task/:taskID", (req: Request, res: Response) => {
+    const userID: number = req.query.userID != void 0? Number(req.query.userID as string):null
 })
