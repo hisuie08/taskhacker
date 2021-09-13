@@ -1,3 +1,7 @@
+import { UserException } from "./exceptions";
+import registry from "./registry";
+import { createUUID, now } from "./utils";
+
 export class User {
   id: number;
   name: string;
@@ -7,6 +11,7 @@ export class User {
     this.name = name;
     this.passwd = passwd;
   }
+
 }
 
 export class Project {
@@ -14,14 +19,14 @@ export class Project {
   name: string;
   owner: number;
   created_at: number;
-  description: string|null;
+  description: string | null;
   slaves: Array<Task>;
   constructor(
     id: number,
     name: string,
     owner: number,
     created_at: number,
-    description: string|null=null,
+    description: string | null,
     slaves = []
   ) {
     this.id = id;
@@ -30,6 +35,28 @@ export class Project {
     this.created_at = created_at;
     this.description = description || null;
     this.slaves = slaves;
+  }
+
+  static register(
+    name: string,
+    owner: number,
+    description: string | null
+  ): Project | null {
+    const id: number = createUUID();
+    const project: Project = new Project(
+      id,
+      name,
+      owner,
+      now(),
+      description || null
+    );
+    registry.projects.set(id, project);
+    return registry.projects.get(id)!
+  }
+  static get(id: number): Project | null {
+    return registry.projects.get(id) != void 0
+      ? (registry.projects.get(id) as Project)
+      : null;
   }
 }
 
@@ -54,8 +81,8 @@ export class Task {
   priority: Priority;
   created_at: number;
   updated_at: number;
-  deadline: number|null;
-  memo: string|null;
+  deadline: number | null;
+  memo: string | null;
   project: number;
   constructor(
     id: number,
@@ -64,8 +91,8 @@ export class Task {
     priority: Priority,
     created_at: number,
     updated_at: number,
-    deadline: number|null,
-    memo: string|null,
+    deadline: number | null,
+    memo: string | null,
     project: number
   ) {
     this.id = id;
@@ -74,8 +101,8 @@ export class Task {
     this.priority = priority;
     this.created_at = created_at;
     this.updated_at = updated_at;
-    this.deadline = deadline||null;
-    this.memo = memo||null;
+    this.deadline = deadline || null;
+    this.memo = memo || null;
     this.project = project;
   }
 }

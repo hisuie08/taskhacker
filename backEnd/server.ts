@@ -1,16 +1,53 @@
-import express from "express"
-const app = express();
+import express, { Application, Request, Response } from "express";
+import controller from "./controller";
+const app: Application = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }))
 
-
-
-app.get('/api/info', (_req: any, res: { json: (arg0: { name: string; version: string; }) => void; }) => {
-    const data = { name: "TaskHacker", version: "1.0.0" }
-    res.json(data);
+app.get("/user", (req: Request, res: Response) => {
+    const name: string = req.query.name as string|undefined
+    const passwd: string = req.query.passwd as string|undefined
+    controller.user.auth(name,passwd)
+})
+app.post("/user", (req: Request, res: Response) => {
+    const name: string = req.query.name as string|undefined
+    const passwd: string = req.query.passwd as string|undefined
+    controller.user.register(name,passwd)
+})
+app.put("/user", (req: Request, res: Response) => {
+    const userID: number = req.query.userID != void 0? Number(req.query.userID as string):null
+    const name: string = req.query.name as string|undefined
+    const passwd: string = req.query.passwd as string|undefined
+    controller.user.update(userID,name,passwd)
 })
 
-app.post("/api/user/register", (req: { query: any; }, res: { json: (arg0: { name: any; }) => void; }) => {
-    const param = req.query
-    res.json({name:param.name})
+app.delete("/user", (req: Request, res: Response) => {
+    const userID: number = req.query.userID != void 0? Number(req.query.userID as string):null
+    const passwd: string = req.query.passwd as string | undefined
+    controller.user.unregister(userID)
 })
 
-app.listen(3000, () => console.log('Listening on port 3000'));
+app.get("/project", (req: Request, res: Response) => {
+    const userID: number = req.query.userID != void 0? Number(req.query.userID as string):null
+})
+app.post("/project", (req: Request, res: Response) => {
+})
+
+app.get("/project/:projectID", (req: Request, res: Response) => {
+})
+app.put("/project/:projectID", (req: Request, res: Response) => {
+})
+app.delete("/project/:projectID", (req: Request, res: Response) => {
+})
+
+app.get("/project/:projectID/task", (req: Request, res: Response) => {
+})
+app.post("/project/:projectID/task", (req: Request, res: Response) => {
+})
+
+app.get("/project/:projectID/task/:taskID", (req: Request, res: Response) => {
+})
+app.put("/project/:projectID/task/:taskID", (req: Request, res: Response) => {
+})
+app.delete("/project/:projectID/task/:taskID", (req: Request, res: Response) => {
+})
