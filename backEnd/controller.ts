@@ -1,6 +1,6 @@
 import registry from "./registry";
 import { createUUID, now } from "./utils";
-import { ProjectException, TaskException, UserException } from "./exceptions";
+import { ProjectException, TaskException, UserException } from "./utils";
 import { Type } from "class-transformer";
 import 'reflect-metadata';
 export class User {
