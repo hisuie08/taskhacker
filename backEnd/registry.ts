@@ -1,4 +1,4 @@
-import { User, Project, Task, Status } from "./controller";
+import { User, Project, Task, Status, Priority } from "./controller";
 import fs from "fs";
 class Registry {
   users: Map<number, User>;
@@ -36,7 +36,17 @@ class Registry {
       [...JSON.parse(data)].forEach((task) => {
         this.tasks.set(
           task["id"],
-          new Task(task["id"], task["name"], task["project"])
+          new Task(
+            task["id"],
+            task["name"],
+            task["project"],
+            Status[Number(task["status"])] as unknown as Status,
+            Priority[task["priority"]] as unknown as Priority,
+            task["created_at"],
+            task["updated_at"],
+            task["deadline"],
+            task["memo"]
+          )
         );
       });
     });
