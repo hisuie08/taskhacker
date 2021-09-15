@@ -27,7 +27,8 @@ class Registry {
             project["name"],
             User.get(project["owner"]!),
             project["created_at"],
-            project["description"]
+            project["description"],
+            project["members"],project["slaves"]
           )
         );
       });

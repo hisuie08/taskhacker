@@ -72,7 +72,9 @@ export class Project {
     name: string | null = null,
     owner: User | null = null,
     created_at: number | null = null,
-    description: string | null = null
+    description: string | null = null,
+    members: Array<User> =[],
+    slaves: Array<Task> = []
   ) {
     if (id !== null && name === null && owner === null) return Project.get(id);
     this.id = id!;
@@ -80,8 +82,8 @@ export class Project {
     this.owner = owner;
     this.created_at = created_at;
     this.description = description || null;
-    this.members = new Array<User>();
-    this.slaves = new Array<Task>();
+    this.members = members;
+    this.slaves = slaves;
   }
   static register(
     name: string,
