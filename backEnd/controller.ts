@@ -1,7 +1,8 @@
 import registry from "./registry";
 import { createUUID, now } from "./utils";
 import { ProjectException, TaskException, UserException } from "./exceptions";
-
+import { Type } from "class-transformer";
+import 'reflect-metadata';
 export class User {
   id?: number | null;
   name?: string | null;
@@ -65,16 +66,18 @@ export class Project {
   owner?: User | null;
   created_at?: number | null;
   description?: string | null;
-  members!: Array<User>;
-  slaves!: Array<Task>;
+  @Type(()=>User)
+  members!: User[];
+  @Type(()=>Task)
+  slaves!: Task[];
   constructor(
     id: number | null = null,
     name: string | null = null,
     owner: User | null = null,
     created_at: number | null = null,
     description: string | null = null,
-    members: Array<User> =[],
-    slaves: Array<Task> = []
+    members: User[] =[],
+    slaves: Task[] = []
   ) {
     if (id !== null && name === null && owner === null) return Project.get(id);
     this.id = id!;
@@ -91,7 +94,7 @@ export class Project {
     description: string | null = null
   ): Project {
     const id = createUUID();
-    const project = new Project(id, name, owner, now(), description);
+    const project = new Project(id, name, owner, now(), description,[],[]);
     project.members.push(owner);
     registry.projects.set(id, project);
     return Project.get(id)!;
@@ -119,6 +122,13 @@ export class Project {
     const result = new Array<Project>();
     for (const project of registry.projects.values()) result.push(project);
     return result;
+  }
+  getTask(id: number) {
+    for (const task of this.getSlaves()) {
+      if (task.id === id) {
+        return task
+      }
+    }throw new TaskException("Task not found:" + id)
   }
   updateName(name: string): Project {
     this.name = name;

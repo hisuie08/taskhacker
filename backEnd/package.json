@@ -10,7 +10,10 @@
   "license": "ISC",
   "dependencies": {
     "@types/node": "^16.9.1",
+    "class-transformer": "^0.4.0",
+    "es6-shim": "^0.35.6",
     "express": "^4.17.1",
+    "reflect-metadata": "^0.1.13",
     "typescript": "^4.4.3"
   },
   "devDependencies": {

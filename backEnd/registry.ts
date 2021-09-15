@@ -1,5 +1,7 @@
-import { User, Project, Task, Status, Priority } from "./controller";
-import fs from "fs";
+import { User, Project, Task} from "./controller";
+import * as fs from "fs";
+import { plainToClass } from "class-transformer";
+import "reflect-metadata";
 class Registry {
   users: Map<number, User>;
   projects: Map<number, Project>;
@@ -10,47 +12,24 @@ class Registry {
     this.tasks = new Map<number, Task>();
   }
   load(dirPath: string) {
-    fs.readFile(dirPath + "/user.json", { encoding: "utf-8" }, (_, data) => {
-      [...JSON.parse(data)].forEach((user) => {
-        this.users.set(
-          user["id"],
-          new User(user["id"], user["name"], user["passwd"])
-        );
-      });
-    });
-    fs.readFile(dirPath + "/project.json", { encoding: "utf-8" }, (_, data) => {
-      [...JSON.parse(data)].forEach((project) => {
-        this.projects.set(
-          project["id"],
-          new Project(
-            project["id"],
-            project["name"],
-            User.get(project["owner"]!),
-            project["created_at"],
-            project["description"],
-            project["members"],project["slaves"]
-          )
-        );
-      });
-    });
-    fs.readFile(dirPath + "/task.json", { encoding: "utf-8" }, (_, data) => {
-      [...JSON.parse(data)].forEach((task) => {
-        this.tasks.set(
-          task["id"],
-          new Task(
-            task["id"],
-            task["name"],
-            task["project"],
-            Status[Number(task["status"])] as unknown as Status,
-            Priority[task["priority"]] as unknown as Priority,
-            task["created_at"],
-            task["updated_at"],
-            task["deadline"],
-            task["memo"]
-          )
-        );
-      });
-    });
+    const userData = fs.readFileSync(dirPath + "/user.json", { encoding: "utf-8" })
+    const userJson = [...JSON.parse(userData)];
+    for (const user of userJson) {
+      this.users.set(user["id"], plainToClass(User, user) as unknown as User);
+    }
+    const projectData = fs.readFileSync(dirPath + "/project.json", { encoding: "utf-8" })
+    const projectJson = [...JSON.parse(projectData)];
+    for (const project of projectJson) {
+      this.projects.set(
+        project["id"]!,
+        plainToClass(Project, project) as unknown as Project
+      );
+    }
+    const taskData = fs.readFileSync(dirPath + "/task.json", { encoding: "utf-8" })
+    const taskJson = [...JSON.parse(taskData)];
+    for (const task of taskJson) {
+      this.tasks.set(task["id"], plainToClass(Task, task) as unknown as Task);
+    }
   }
   dump(dirPath: string) {
     const [userData, projectData, taskData] = [
