@@ -3,6 +3,7 @@ import controller from "./controller";
 const app: express.Application = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
+
 const MissingParam = (params: Array<Object>, res: express.Response) => {
     let newParams:Array<string> = params.map(x=>Object.keys(x)[0])
     return res.contentType("application/json").status(400).json({ message: "Missing params:" + newParams })
@@ -83,4 +84,4 @@ app.delete("/project/:projectID/task/:taskID", (req: express.Request, res: expre
     const projectID: number = req.params.projectID != void 0 ? Number(req.params.projectID as string) : null
 })
 
-app.listen(3000, ()=>{console.log("start")})
+app.listen(3020, ()=>{console.log("start")})
