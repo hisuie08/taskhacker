@@ -18,7 +18,7 @@ export default Vue.extend(
     },
     methods:{
         async submit(){
-          const result = this.$axios.$post("http://127.0.0.1:3020/api/user/login",JSON.stringify({name:this.user.name,passwd:this.user.passwd}))
+          const result = this.$axios.$post("http://localhost:3020/api/user/login",JSON.stringify({name:this.user.name,passwd:this.user.passwd}))
           console.log(result)
         }
     }
