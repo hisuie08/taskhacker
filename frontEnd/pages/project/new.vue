@@ -30,7 +30,7 @@
     },
     methods: {
       onSubmit() {
-        console.log({project:this.project});
+        console.log({project:this});
       }
     }
   }
